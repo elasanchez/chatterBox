@@ -18,9 +18,9 @@ ws.on('connection', function(socket) {
     socket.send(curr);
   }
 
-  messages.forEach(function(msg) {
-    socket.send(msg);
-  });
+  // messages.forEach(function(msg) {
+  //   socket.send(msg);
+  // });
 
   socket.on('message', function(data) {
     console.log('message received: ' + data);
@@ -29,9 +29,9 @@ ws.on('connection', function(socket) {
       var newTopic = "*** Topic has been changed to ";
       // get the data after topic_ till the end of the message
       newTopic += "'" + data.substring(7, data.length) + "'";
-      //keep track of topic
+      //keep track of new topic
       topic = data.substring(7, data.length);
-
+      messages = [];
       ws.clients.forEach(function(clientSocket) {
         clientSocket.send(newTopic);
       });
@@ -40,10 +40,11 @@ ws.on('connection', function(socket) {
 
     messages.push(data);
     ws.clients.forEach(function(clientSocket) {
+      // console.log("Sending data to all?");
       clientSocket.send(data)
     });
 
-    // previous implementation to send data to main chat
+    // previous implementation to send data to main ser
     // socket.send(data);
   });
 });
