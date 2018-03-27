@@ -13,25 +13,25 @@ ws.on('connection', function(socket) {
   console.log('client connection established');
   // if conversation of this topic isn't empty.
   if (topic) {
-    var curr = "*** Topic is ";
-    curr += "'" + topic + "'";
+    var curr = '*** Topic is ';
+    curr += '\'' + topic + '\'';
     socket.send(curr);
   }
 
-  // messages.forEach(function(msg) {
-  //   socket.send(msg);
-  // });
+  messages.forEach(function(msg) {
+    socket.send(msg);
+  });
 
   socket.on('message', function(data) {
     console.log('message received: ' + data);
 
-    if (data.indexOf("/topic") != -1) {
-      
-      var newTopic = "*** Topic has been changed to ";
+    if (data.indexOf('/topic') != -1) {
+
+      var newTopic = '*** Topic has been changed to ';
       // get the data after topic_ till the end of the message
-      newTopic += "'" + data.substring(data.indexOf("/topic")+7, data.length) + "'";
+      newTopic += '\'' + data.substring((data.indexOf('/topic') + 7), data.length) + '\'';
       //keep track of new topic
-      topic = data.substring(7, data.length);
+      topic = data.substring((data.indexOf('/topic')+7), data.length);
       //reset messages every new topic
       messages = [];
       //
@@ -42,8 +42,8 @@ ws.on('connection', function(socket) {
 
     messages.push(data);
     ws.clients.forEach(function(clientSocket) {
-      // console.log("Sending data to all?");
-      clientSocket.send(data)
+      // console.log('Sending data to all?');
+      clientSocket.send(data);
     });
 
     // previous implementation to send data to main ser
