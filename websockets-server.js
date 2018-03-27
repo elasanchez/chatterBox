@@ -11,7 +11,7 @@ console.log('websockets server started');
 
 ws.on('connection', function(socket) {
   console.log('client connection established');
-
+  // if conversation of this topic isn't empty.
   if (topic) {
     var curr = "*** Topic is ";
     curr += "'" + topic + "'";
@@ -25,18 +25,20 @@ ws.on('connection', function(socket) {
   socket.on('message', function(data) {
     console.log('message received: ' + data);
 
-    if(data.indexOf("/topic") != -1) {
+    if (data.indexOf("/topic") != -1) {
+      
       var newTopic = "*** Topic has been changed to ";
       // get the data after topic_ till the end of the message
-      newTopic += "'" + data.substring(7, data.length) + "'";
+      newTopic += "'" + data.substring(data.indexOf("/topic")+7, data.length) + "'";
       //keep track of new topic
       topic = data.substring(7, data.length);
+      //reset messages every new topic
       messages = [];
+      //
       ws.clients.forEach(function(clientSocket) {
         clientSocket.send(newTopic);
       });
     }
-
 
     messages.push(data);
     ws.clients.forEach(function(clientSocket) {
