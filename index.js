@@ -3,16 +3,16 @@
 var http = require('http');
 var fs = require('fs');
 var extract = require('./extract');
-var wss = require("./websockets-server");
+var wss = require('./websockets-server');
 var mime = require('mime');
-
+var error = 'app/error.html';
 var handleError = function(err, res) {
 
-  fs.readFile("app/error.html", function(err, data) {
+  fs.readFile('app/error.html', function(err, data) {
     if (!err) {
       // to serve html, include content type param
       res.writeHead(404, {
-        "Content-Type": mime.getType(error)
+        'Content-Type': mime.getType(error)
       });
       res.write(data);
     }
@@ -29,7 +29,7 @@ var server = http.createServer(function(req, res) {
       handleError(err, res);
       return;
     } else {
-      res.setHeader("Content-Type", mime.getType(filePath));
+      res.setHeader('Content-Type', mime.getType(filePath));
       res.end(data);
     }
   });
